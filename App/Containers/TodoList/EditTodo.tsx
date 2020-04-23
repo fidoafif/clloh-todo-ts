@@ -3,19 +3,19 @@ import { Text, View, TextInput } from 'react-native'
 import { connect } from 'react-redux'
 import Style from './TodoScreenStyle'
 import { Colors } from '../../Theme'
-import { Dispatch, bindActionCreators } from 'redux'
+import { Dispatch } from 'redux'
 import { AppState } from '../../Stores'
 import { editTodo } from '../../Stores/Todo/Actions'
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler'
 import { ITodo } from '../../Stores/Todo/Actions.type'
 
 interface EditTodoScreenBaseProps {
-  editTodo: (data: any) => void;
+  doEditTodo: (data: any) => void;
   navigation: any;
 }
 
 const EditTodoScreenBase: FunctionComponent<EditTodoScreenBaseProps> = (props) => {
-  const { editTodo, navigation } = props
+  const { doEditTodo, navigation } = props
 
   const { params } = navigation.state
   const todo: ITodo = params.todo
@@ -64,7 +64,7 @@ const EditTodoScreenBase: FunctionComponent<EditTodoScreenBaseProps> = (props) =
           entry.title = title
           entry.description = description
           entry.updatedAt = new Date().toString()
-          editTodo(entry)
+          doEditTodo(entry)
           props.navigation.goBack()
         }}
         disabled={!formFilled()}
@@ -88,9 +88,11 @@ const mapStateToProps = (state: AppState): any => ({
   todos: state.todoReducer,
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return bindActionCreators({ editTodo }, dispatch)
-}
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  doEditTodo: (data: ITodo) => {
+    dispatch(editTodo(data))
+  },
+})
 
 const EditTodoScreen = connect(mapStateToProps, mapDispatchToProps)(EditTodoScreenBase)
 
