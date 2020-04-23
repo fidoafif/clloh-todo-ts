@@ -18,7 +18,7 @@ const EditTodoScreenBase: FunctionComponent<EditTodoScreenBaseProps> = (props) =
   const { doEditTodo, navigation } = props
 
   const { params } = navigation.state
-  const todo: ITodo = params.todo
+  const todo: ITodo = { ...params.todo }
 
   const [title, setTitle] = useState(todo.title)
   const [description, setDesc] = useState(todo.description)
